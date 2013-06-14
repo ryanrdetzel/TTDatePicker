@@ -7,6 +7,7 @@
 //
 
 #import "TTDateTimePicker.h"
+#import <QuartzCore/QuartzCore.h>
 
 @implementation TTDateTimePicker
 
@@ -14,6 +15,7 @@
 @synthesize dateData, hourData, minuteData, periodData;
 @synthesize date, hour, minute, period, dateString;
 @synthesize delegate;
+@synthesize backgroundColor, textColor, fade;
 
 -(id)init{
     return [self initWithFrame:CGRectMake(0,0,320,150)];
@@ -31,47 +33,48 @@
         
         [self setBackgroundColor:[UIColor whiteColor]];
         
-        UIColor * greenColor = [UIColor colorWithRed:75/255.0f green:196/255.0f blue:59/255.0f alpha:1.0f];
+        backgroundColor = [UIColor colorWithRed:75/255.0f green:196/255.0f blue:59/255.0f alpha:1.0f];
+        textColor = [UIColor whiteColor];
+        
         datePicker = [[UITableView alloc] initWithFrame:CGRectMake(0,0,120,150)];
         datePicker.dataSource = self;
         datePicker.delegate = self;
-        datePicker.backgroundColor = greenColor;
         datePicker.separatorStyle = UITableViewCellSeparatorStyleNone;
 
-        UILabel *at = [[UILabel alloc] initWithFrame:CGRectMake(120, 0, 30, 150)];
-        [at setFont:[UIFont fontWithName:@"Helvetica" size:20]];
-        [at setBackgroundColor:greenColor];
-        [at setTextColor:[UIColor whiteColor]];
-        [at setText:@"@"];
+        atLabel = [[UILabel alloc] initWithFrame:CGRectMake(120, 0, 30, 150)];
+        [atLabel setFont:[UIFont fontWithName:@"Helvetica" size:20]];
+        [atLabel setBackgroundColor:backgroundColor];
+        [atLabel setTextColor:textColor];
+        [atLabel setTextAlignment:NSTextAlignmentCenter];
+        [atLabel setText:@"@"];
         
         hourPicker = [[UITableView alloc] initWithFrame:CGRectMake(150,0,50,150)];
         hourPicker.dataSource = self;
         hourPicker.delegate = self;
-        hourPicker.backgroundColor = greenColor;
         hourPicker.separatorStyle = UITableViewCellSeparatorStyleNone;
 
         minutePicker = [[UITableView alloc] initWithFrame:CGRectMake(202,0,50,150)];
         minutePicker.dataSource = self;
         minutePicker.delegate = self;
-        minutePicker.backgroundColor = greenColor;
         minutePicker.separatorStyle = UITableViewCellSeparatorStyleNone;
         
         periodPicker = [[UITableView alloc] initWithFrame:CGRectMake(254,0,70,150)];
         periodPicker.dataSource = self;
         periodPicker.delegate = self;
-        periodPicker.backgroundColor = greenColor;
         periodPicker.separatorStyle = UITableViewCellSeparatorStyleNone;
         
-        UIImageView *fade = [[UIImageView alloc] initWithFrame:CGRectMake(0,0,320,150)];
-        [fade setImage:[UIImage imageNamed:@"transparent.png"]];
+        fade = [[UIImageView alloc] initWithFrame:CGRectMake(0,0,320,150)];
+        [fade setImage:[UIImage imageNamed:@"transparent-green.png"]];
         [fade setContentMode:UIViewContentModeCenter];
         
         [self addSubview:datePicker];
-        [self addSubview:at];
+        [self addSubview:atLabel];
         [self addSubview:hourPicker];
         [self addSubview:minutePicker];
         [self addSubview:periodPicker];
         [self addSubview:fade];
+        
+        [self updateColors:textColor backgroundColor:backgroundColor];
         
         // Set some defaults
         date = [NSDate date];
@@ -88,6 +91,37 @@
     }
 
     return self;
+}
+
+
+-(void)updateColors:(UIColor *)txtColor backgroundColor:(UIColor *)bgColor{
+    backgroundColor = bgColor;
+    textColor = txtColor;
+    
+    datePicker.backgroundColor = backgroundColor;
+    hourPicker.backgroundColor = backgroundColor;
+    periodPicker.backgroundColor = backgroundColor;
+    minutePicker.backgroundColor = backgroundColor;
+    [atLabel setBackgroundColor:backgroundColor];
+    [self setBackgroundColor:backgroundColor];
+    
+    [atLabel setTextColor:textColor];
+    
+    /*
+     DOESN'T WORK
+    CAGradientLayer *mask = [CAGradientLayer layer];
+    mask.frame = self.bounds;
+    mask.colors = [NSArray arrayWithObjects:
+                   (__bridge id)backgroundColor.CGColor,
+                   (__bridge id)backgroundColor.CGColor,
+                   (__bridge id)[UIColor clearColor].CGColor,
+                   (__bridge id)[UIColor clearColor].CGColor,
+                   nil];
+    mask.startPoint = CGPointMake(0.5, -0.0); // top left corner
+    mask.endPoint = CGPointMake(0.5, 1); // bottom right corner
+    [self.layer insertSublayer:mask atIndex:10];
+    //self.layer.mask = mask;
+     */
 }
 
 -(NSArray *)initialPeriodData{
@@ -183,6 +217,11 @@
             NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"TTDateTimePickerDateCell" owner:self options:nil];
             cell = [topLevelObjects objectAtIndex:0];
         }
+        /* This is probably overkill */
+        [(UILabel *)[cell viewWithTag:1] setTextColor:textColor];
+        [(UILabel *)[cell viewWithTag:2] setTextColor:textColor];
+        
+
         if (indexPath.row <= 0 || indexPath.row > [dateData count]){
             [(UILabel *)[cell viewWithTag:1] setText:@""];
             [(UILabel *)[cell viewWithTag:2] setText:@""];
@@ -197,6 +236,9 @@
             NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"TTDateTimePickerDateCell" owner:self options:nil];
             cell = [topLevelObjects objectAtIndex:1];
         }
+        /* This is probably overkill */
+        [(UILabel *)[cell viewWithTag:1] setTextColor:textColor];
+
         if (indexPath.row <= 0 || indexPath.row > [hourData count]){
             [(UILabel *)[cell viewWithTag:1] setText:@""];
         }
@@ -210,6 +252,9 @@
             NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"TTDateTimePickerDateCell" owner:self options:nil];
             cell = [topLevelObjects objectAtIndex:2];
         }
+        /* This is probably overkill */
+        [(UILabel *)[cell viewWithTag:1] setTextColor:textColor];
+        
         if (indexPath.row <= 0 || indexPath.row > [minuteData count]){
             [(UILabel *)[cell viewWithTag:1] setText:@""];
         }
@@ -229,6 +274,9 @@
             NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"TTDateTimePickerDateCell" owner:self options:nil];
             cell = [topLevelObjects objectAtIndex:3];
         }
+        /* This is probably overkill */
+        [(UILabel *)[cell viewWithTag:1] setTextColor:textColor];
+        
         if (indexPath.row <= 0 || indexPath.row > [periodData count]){
             [(UILabel *)[cell viewWithTag:1] setText:@""];
         }

@@ -18,7 +18,13 @@
 @end
 
 
-@interface TTDateTimePicker : UIView <UITableViewDataSource, UITableViewDelegate>
+@interface TTDateTimePicker : UIView <UITableViewDataSource, UITableViewDelegate>{
+    UILabel *atLabel;
+}
+
+@property (nonatomic, retain) UIColor *backgroundColor;
+@property (nonatomic, retain) UIColor *textColor;
+@property (nonatomic, retain) UIImageView *fade;
 
 @property (nonatomic, retain, readonly) NSDate *date;
 @property (nonatomic, retain, readonly) NSString *dateString;
@@ -47,5 +53,6 @@
 -(NSArray *)initialPeriodData;
 
 -(void)scroll:(UITableView *)tableView to:(int)index;
+-(void)updateColors:(UIColor *)textColor backgroundColor:(UIColor *)bgColor;
 
 @end

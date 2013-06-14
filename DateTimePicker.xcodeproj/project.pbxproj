@@ -7,7 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		C5A2D352176AB84700A50D31 /* transparent.png in Resources */ = {isa = PBXBuildFile; fileRef = C5A2D351176AB84700A50D31 /* transparent.png */; };
+		C5A2D352176AB84700A50D31 /* transparent-green.png in Resources */ = {isa = PBXBuildFile; fileRef = C5A2D351176AB84700A50D31 /* transparent-green.png */; };
+		C5A2D356176B5DC300A50D31 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5A2D355176B5DC300A50D31 /* QuartzCore.framework */; };
+		C5A2D358176B63FE00A50D31 /* transparent-blue.png in Resources */ = {isa = PBXBuildFile; fileRef = C5A2D357176B63FE00A50D31 /* transparent-blue.png */; };
+		C5A2D35A176B654E00A50D31 /* transparent-red.png in Resources */ = {isa = PBXBuildFile; fileRef = C5A2D359176B654E00A50D31 /* transparent-red.png */; };
 		C5E6C5F1176A963E00B669CD /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5E6C5F0176A963D00B669CD /* UIKit.framework */; };
 		C5E6C5F3176A963E00B669CD /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5E6C5F2176A963E00B669CD /* Foundation.framework */; };
 		C5E6C5F5176A963E00B669CD /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5E6C5F4176A963E00B669CD /* CoreGraphics.framework */; };
@@ -25,7 +28,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		C5A2D351176AB84700A50D31 /* transparent.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = transparent.png; sourceTree = "<group>"; };
+		C5A2D351176AB84700A50D31 /* transparent-green.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "transparent-green.png"; sourceTree = "<group>"; };
+		C5A2D355176B5DC300A50D31 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		C5A2D357176B63FE00A50D31 /* transparent-blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "transparent-blue.png"; sourceTree = "<group>"; };
+		C5A2D359176B654E00A50D31 /* transparent-red.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "transparent-red.png"; sourceTree = "<group>"; };
 		C5E6C5ED176A963D00B669CD /* DateTimePicker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DateTimePicker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C5E6C5F0176A963D00B669CD /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		C5E6C5F2176A963E00B669CD /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -55,6 +61,7 @@
 				C5E6C5F1176A963E00B669CD /* UIKit.framework in Frameworks */,
 				C5E6C5F3176A963E00B669CD /* Foundation.framework in Frameworks */,
 				C5E6C5F5176A963E00B669CD /* CoreGraphics.framework in Frameworks */,
+				C5A2D356176B5DC300A50D31 /* QuartzCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -81,6 +88,7 @@
 		C5E6C5EF176A963D00B669CD /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C5A2D355176B5DC300A50D31 /* QuartzCore.framework */,
 				C5E6C5F0176A963D00B669CD /* UIKit.framework */,
 				C5E6C5F2176A963E00B669CD /* Foundation.framework */,
 				C5E6C5F4176A963E00B669CD /* CoreGraphics.framework */,
@@ -99,7 +107,9 @@
 				C5E6C613176A964B00B669CD /* TTDateTimePicker.h */,
 				C5E6C614176A964B00B669CD /* TTDateTimePicker.m */,
 				C5E6C615176A964B00B669CD /* TTDateTimePickerDateCell.xib */,
-				C5A2D351176AB84700A50D31 /* transparent.png */,
+				C5A2D351176AB84700A50D31 /* transparent-green.png */,
+				C5A2D359176B654E00A50D31 /* transparent-red.png */,
+				C5A2D357176B63FE00A50D31 /* transparent-blue.png */,
 				C5E6C5F7176A963E00B669CD /* Supporting Files */,
 			);
 			path = DateTimePicker;
@@ -176,7 +186,9 @@
 				C5E6C605176A963E00B669CD /* Default@2x.png in Resources */,
 				C5E6C607176A963E00B669CD /* Default-568h@2x.png in Resources */,
 				C5E6C60D176A963E00B669CD /* ViewController.xib in Resources */,
-				C5A2D352176AB84700A50D31 /* transparent.png in Resources */,
+				C5A2D352176AB84700A50D31 /* transparent-green.png in Resources */,
+				C5A2D358176B63FE00A50D31 /* transparent-blue.png in Resources */,
+				C5A2D35A176B654E00A50D31 /* transparent-red.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
