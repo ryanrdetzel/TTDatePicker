@@ -11,11 +11,11 @@ You can pull out the following files into your project.
 
 The following delegates are called:
 
--(void)hourChanged:(NSString *)hour;
--(void)minuteChanged:(NSString *)minute;
--(void)periodChanged:(NSString *)period;
--(void)dateChanged:(NSString *)date;
--(void)dateTimeChanged:(NSDate *)dateTime;
+- (void)hourChanged:(NSString *)hour;
+- (void)minuteChanged:(NSString *)minute;
+- (void)periodChanged:(NSString *)period;
+- (void)dateChanged:(NSString *)date;
+- (void)dateTimeChanged:(NSDate *)dateTime;
 
 
 All the cells are in the xib file and the transparent.png just give it a little depth.
