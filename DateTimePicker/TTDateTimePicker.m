@@ -40,6 +40,7 @@
         datePicker.dataSource = self;
         datePicker.delegate = self;
         datePicker.separatorStyle = UITableViewCellSeparatorStyleNone;
+        datePicker.showsVerticalScrollIndicator = NO;
 
         atLabel = [[UILabel alloc] initWithFrame:CGRectMake(120, 0, 30, 150)];
         [atLabel setFont:[UIFont fontWithName:@"Helvetica" size:20]];
@@ -52,17 +53,20 @@
         hourPicker.dataSource = self;
         hourPicker.delegate = self;
         hourPicker.separatorStyle = UITableViewCellSeparatorStyleNone;
+        hourPicker.showsVerticalScrollIndicator = NO;
 
         minutePicker = [[UITableView alloc] initWithFrame:CGRectMake(202,0,50,150)];
         minutePicker.dataSource = self;
         minutePicker.delegate = self;
         minutePicker.separatorStyle = UITableViewCellSeparatorStyleNone;
-        
+        minutePicker.showsVerticalScrollIndicator = NO;
+
         periodPicker = [[UITableView alloc] initWithFrame:CGRectMake(254,0,70,150)];
         periodPicker.dataSource = self;
         periodPicker.delegate = self;
         periodPicker.separatorStyle = UITableViewCellSeparatorStyleNone;
-        
+        periodPicker.showsVerticalScrollIndicator = NO;
+
         fade = [[UIImageView alloc] initWithFrame:CGRectMake(0,0,320,150)];
         [fade setImage:[UIImage imageNamed:@"transparent-green.png"]];
         [fade setContentMode:UIViewContentModeCenter];
