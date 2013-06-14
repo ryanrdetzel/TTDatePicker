@@ -25,11 +25,21 @@
 }
 
 - (void)hourChanged:(NSString *)hour{
-    NSLog(@"HOUR CHANGED: %@", hour);
+    //NSLog(@"HOUR CHANGED: %@", hour);
 }
 
-- (void)minuteChanged:(NSString *)hour{
-    NSLog(@"Minute CHANGED: %@", hour);
+- (void)minuteChanged:(NSString *)minute{
+    //NSLog(@"Minute CHANGED: %@", minute);
+}
+
+-(void)periodChanged:(NSString *)period{
+    //NSLog(@"Period CHANGED: %@", period);
+}
+-(void)dateChanged:(NSString *)date{
+    //NSLog(@"Date CHANGED: %@", date);
+}
+-(void)dateTimeChanged:(NSDate *)dateTime{
+    NSLog(@"DateTime CHANGED: %@", dateTime);
 }
 
 

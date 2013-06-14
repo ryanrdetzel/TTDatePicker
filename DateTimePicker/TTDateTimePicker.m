@@ -12,7 +12,7 @@
 
 @synthesize periodPicker, datePicker, hourPicker, minutePicker;
 @synthesize dateData, hourData, minuteData, periodData;
-@synthesize date, hour, minute, period;
+@synthesize date, hour, minute, period, dateString;
 @synthesize delegate;
 
 -(id)init{
@@ -74,6 +74,14 @@
         [self addSubview:fade];
         
         // Set some defaults
+        date = [NSDate date];
+        NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+        NSDateComponents *components = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit fromDate:date];
+        
+        hour = [NSString stringWithFormat:@"%ld", (long)components.hour];
+        minute = [NSString stringWithFormat:@"%ld", (long)components.minute];
+        period = @"PM";
+        
         [self scroll:hourPicker to:5];
         [self scroll:minutePicker to:6];
         [self scroll:periodPicker to:1];
@@ -117,7 +125,7 @@
         
         
         
-        NSString *dateString = [NSString stringWithFormat:@"%@%@",
+        NSString *_dateString = [NSString stringWithFormat:@"%@%@",
                           [DateFormatter stringFromDate:dateToBeIncremented],
                           [self dateSuffix:(int)comp.day]];
         
@@ -129,7 +137,7 @@
             dow = [DOYFormatter stringFromDate:dateToBeIncremented];
         }
         
-        NSArray *objects = [[NSArray alloc] initWithObjects:dow, dateString, dateToBeIncremented, nil];
+        NSArray *objects = [[NSArray alloc] initWithObjects:dow, _dateString, dateToBeIncremented, nil];
         NSArray *keys = [[NSArray alloc] initWithObjects:@"dowLabel", @"dateLabel", @"date", nil];
 
         NSDictionary *data = [[NSDictionary alloc] initWithObjects:objects forKeys:keys];
@@ -240,6 +248,29 @@
     [tableView setContentOffset:point];
 }
 
+-(NSDate *)dateTime{
+    /* Returns the full date time */
+    NSCalendar *theCalendar = [NSCalendar currentCalendar];
+    NSLog(@"Current date: %@", date);
+    NSDateComponents* comp = [theCalendar components:NSMinuteCalendarUnit | NSHourCalendarUnit | NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit fromDate:date];
+
+    int _hour = [hour integerValue];
+    if ([period isEqualToString:@"PM"]){
+        _hour += 12;
+    }
+    [comp setHour:_hour];
+    [comp setMinute:[minute integerValue]];
+
+    return [theCalendar dateFromComponents:comp];
+}
+
+-(NSString *)dateTimeString{
+    NSDate *_date = [self dateTime];
+    NSDateFormatter *DateFormatter=[[NSDateFormatter alloc] init];
+    [DateFormatter setDateFormat:@"EEEE MMMM d HH:MM"];
+    return [DateFormatter stringFromDate:_date];
+}
+
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
     float position = scrollView.contentOffset.y;
     int num = position / 50;
@@ -249,7 +280,20 @@
             NSDictionary *data = [dateData objectAtIndex:num];
             NSDateFormatter *DateFormatter=[[NSDateFormatter alloc] init];
             [DateFormatter setDateFormat:@"EEEE MMMM d"];
-            date = [DateFormatter stringFromDate:[data objectForKey:@"date"]];
+            
+            NSDate *_date = [data objectForKey:@"date"];
+            NSString *_dateString = [DateFormatter stringFromDate:[data objectForKey:@"date"]];
+
+            if (![dateString isEqualToString:_dateString]){
+                date = _date;
+                dateString = _dateString;
+                if([delegate respondsToSelector:@selector(dateChanged:)]){
+                    [delegate dateChanged:dateString];
+                }
+                if([delegate respondsToSelector:@selector(dateTimeChanged:)]){
+                    [delegate dateTimeChanged:[self dateTime]];
+                }
+            }
         }
     }
     else if (scrollView == hourPicker){
@@ -259,6 +303,9 @@
                 hour = _hour;
                 if([delegate respondsToSelector:@selector(hourChanged:)]){
                     [delegate hourChanged:hour];
+                }
+                if([delegate respondsToSelector:@selector(dateTimeChanged:)]){
+                    [delegate dateTimeChanged:[self dateTime]];
                 }
             }
         }
@@ -272,12 +319,24 @@
                 if([delegate respondsToSelector:@selector(minuteChanged:)]){
                     [delegate minuteChanged:minute];
                 }
+                if([delegate respondsToSelector:@selector(dateTimeChanged:)]){
+                    [delegate dateTimeChanged:[self dateTime]];
+                }
             }
         }
     }
     else if (scrollView == periodPicker){
         if (num >= 0 && num <= [periodData count]-1){
-            period = (NSString *)[periodData objectAtIndex:num];
+            NSString *_period = [NSString stringWithFormat:@"%@",[periodData objectAtIndex:num]];
+            if (![period isEqualToString:_period]){
+                period = _period;
+                if([delegate respondsToSelector:@selector(periodChanged:)]){
+                    [delegate periodChanged:period];
+                }
+                if([delegate respondsToSelector:@selector(dateTimeChanged:)]){
+                    [delegate dateTimeChanged:[self dateTime]];
+                }
+            }
         }
     }
 }
