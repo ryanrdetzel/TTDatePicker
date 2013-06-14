@@ -11,3 +11,7 @@ You can pull out the following files into your project.
 
 
 All the cells are in the xib file and the transparent.png just give it a little depth.
+
+An example of what it looks like but everything can be changed since they're just UIViews.
+
+![Image](screenshot.png?raw=true)
