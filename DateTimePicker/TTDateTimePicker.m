@@ -11,8 +11,9 @@
 @implementation TTDateTimePicker
 
 @synthesize periodPicker, datePicker, hourPicker, minutePicker;
-@synthesize dateData, hourData, minuteData;
-@synthesize date, hour, minute;
+@synthesize dateData, hourData, minuteData, periodData;
+@synthesize date, hour, minute, period;
+@synthesize delegate;
 
 -(id)init{
     return [self initWithFrame:CGRectMake(0,0,320,150)];
@@ -26,7 +27,8 @@
         dateData = [self initialDateData];
         hourData = [self initialHourData];
         minuteData = [self initialMinuteData];
-
+        periodData = [self initialPeriodData];
+        
         [self setBackgroundColor:[UIColor whiteColor]];
         
         UIColor * greenColor = [UIColor colorWithRed:75/255.0f green:196/255.0f blue:59/255.0f alpha:1.0f];
@@ -72,12 +74,16 @@
         [self addSubview:fade];
         
         // Set some defaults
-        //[self scroll:datePicker to:0];
         [self scroll:hourPicker to:5];
         [self scroll:minutePicker to:6];
+        [self scroll:periodPicker to:1];
     }
 
     return self;
+}
+
+-(NSArray *)initialPeriodData{
+    return [[NSArray alloc] initWithObjects:@"AM", @"PM", nil];
 }
 
 -(NSArray *)initialHourData{
@@ -205,8 +211,8 @@
             if (indexPath.row <= 2){
                 zero = @"0";
             }
-            NSString *minute = [minuteData objectAtIndex:indexPath.row - 1];
-            [(UILabel *)[cell viewWithTag:1] setText:[NSString stringWithFormat:@"%@%@",zero,minute]];
+            NSString *minuteString = [minuteData objectAtIndex:indexPath.row - 1];
+            [(UILabel *)[cell viewWithTag:1] setText:[NSString stringWithFormat:@"%@%@",zero,minuteString]];
         }
     }
     else if (tableView == periodPicker){
@@ -215,14 +221,11 @@
             NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"TTDateTimePickerDateCell" owner:self options:nil];
             cell = [topLevelObjects objectAtIndex:3];
         }
-        if (indexPath.row == 1){
-            [(UILabel *)[cell viewWithTag:1] setText:@"PM"];
-        }
-        else if (indexPath.row == 2){
-            [(UILabel *)[cell viewWithTag:1] setText:@"AM"];
+        if (indexPath.row <= 0 || indexPath.row > [periodData count]){
+            [(UILabel *)[cell viewWithTag:1] setText:@""];
         }
         else{
-            [(UILabel *)[cell viewWithTag:1] setText:@""];
+            [(UILabel *)[cell viewWithTag:1] setText:[periodData objectAtIndex:indexPath.row - 1]];
         }
     }
     return cell;
@@ -251,18 +254,39 @@
     }
     else if (scrollView == hourPicker){
         if (num >= 0 && num <= [hourData count]-1){
-            hour = (NSString *)[hourData objectAtIndex:num];
+            NSString *_hour = [NSString stringWithFormat:@"%@",[hourData objectAtIndex:num]];
+            if (![hour isEqualToString:_hour]){
+                hour = _hour;
+                if([delegate respondsToSelector:@selector(hourChanged:)]){
+                    [delegate hourChanged:hour];
+                }
+            }
         }
+
     }
     else if (scrollView == minutePicker){
         if (num >= 0 && num <= [minuteData count]-1){
-            minute = (NSString *)[minuteData objectAtIndex:num];
+            NSString *_minute = [NSString stringWithFormat:@"%@",[minuteData objectAtIndex:num]];
+            if (![minute isEqualToString:_minute]){
+                minute = _minute;
+                if([delegate respondsToSelector:@selector(minuteChanged:)]){
+                    [delegate minuteChanged:minute];
+                }
+            }
+        }
+    }
+    else if (scrollView == periodPicker){
+        if (num >= 0 && num <= [periodData count]-1){
+            period = (NSString *)[periodData objectAtIndex:num];
         }
     }
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    /* The +2 is to provide a buffer (padding) at the top and bottom of the list. It was the easier
+        way I could think of */
+    
     if (tableView == hourPicker){
         return [hourData count] + 2;
     }
@@ -270,7 +294,7 @@
         return [minuteData count] + 2;
     }
     else if (tableView == periodPicker){
-        return 4;
+        return [periodData count] + 2;
     }
     // dates
     return [dateData count] + 2;

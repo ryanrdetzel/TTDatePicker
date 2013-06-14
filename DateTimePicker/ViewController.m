@@ -21,7 +21,17 @@
     
     TTDateTimePicker *picker = [[TTDateTimePicker alloc] init];
     [self.view addSubview:picker];
+    [picker setDelegate:self];
 }
+
+- (void)hourChanged:(NSString *)hour{
+    NSLog(@"HOUR CHANGED: %@", hour);
+}
+
+- (void)minuteChanged:(NSString *)hour{
+    NSLog(@"Minute CHANGED: %@", hour);
+}
+
 
 - (void)didReceiveMemoryWarning
 {

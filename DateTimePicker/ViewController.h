@@ -9,6 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "TTDateTimePicker.h"
 
-@interface ViewController : UIViewController
+@interface ViewController : UIViewController <TTDateTimePickerDelegate>
 
 @end
